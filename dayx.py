@@ -1,5 +1,5 @@
 #!/bin/python
-import time
+import re
 
 def test():
 	print "all tests pass!"
