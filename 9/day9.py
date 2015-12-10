@@ -2,6 +2,10 @@
 import re
 from itertools import permutations
 
+def longest_path(valid_routes):
+	distances = [couple[0] for couple in valid_routes]
+	return max(distances)
+	
 def shortest_path(valid_routes):
 	distances = [couple[0] for couple in valid_routes]
 	return min(distances)
@@ -73,9 +77,11 @@ def partone():
 	print shortest_path(valid_routes)
 
 def parttwo():
-	pass
+	graph, cities = parse("input.txt")
+	valid_routes = traveling_santa(graph, cities, create_routes(cities))
+	print longest_path(valid_routes)
 
 if __name__ == '__main__':
     test()
-    partone()
-    # parttwo()
+    # partone()
+    parttwo()
