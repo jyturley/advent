@@ -33,15 +33,21 @@ def partone():
 	input = "1113122113"
 	iterations = 40
 
-	for x in xrange(40):
+	for x in xrange(iterations):
 		input = look_and_say(input)
 
 	print len(input)
 
 def parttwo():
-	pass
+	input = "1113122113"
+	iterations = 50
+
+	for x in xrange(iterations):
+		input = look_and_say(input)
+
+	print len(input)
 
 if __name__ == '__main__':
     test()
-    # partone()
-    # parttwo()
+    partone()
+    parttwo()
