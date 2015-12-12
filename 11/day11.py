@@ -5,14 +5,26 @@ import string
 
 modified_ascii_lowercase = string.ascii_lowercase.replace("i", "").replace("o", "").replace("l", "")
 
+def next_ascii_letter(letter):
+	if letter is 'z':
+		return '$'
+
+	index = string.ascii_lowercase.index(letter)
+	return string.ascii_lowercase[index+1]
 def increment_letter(letter):
 	if letter is'z':
 		return 'a'
 
-	try:
-		index = modified_ascii_lowercase.index(letter)
-	except:
-		return '$'
+	if letter is 'i':
+		return 'j'
+
+	if letter is 'o':
+		return 'p'
+
+	if letter is 'l':
+		return 'm'
+
+	index = modified_ascii_lowercase.index(letter)
 
 	# print modified_ascii_lowercase[index + 1]
 	return modified_ascii_lowercase[index + 1]
@@ -36,7 +48,7 @@ def valid_first_req(password):
 		if streak == 3:
 			return True
 
-		if increment_letter(password[i]) == password[i+1]:
+		if next_ascii_letter(password[i]) == password[i+1]:
 			streak += 1
 			continue
 
@@ -45,7 +57,7 @@ def valid_first_req(password):
 	return streak >= 3
 
 def valid_second_req(password):
-	return True
+	return not 'i' in password and not 'o' in password and not 'l' in password
 
 def valid_third_req(password):
 	pairs = []
@@ -62,16 +74,14 @@ def valid_third_req(password):
 		return False
 
 	for y in xrange(i, len(password) - 1):
-		print y
 		if password[i] == password[i+1] and password[i] != pairs[0]:
 			pairs.append(password[i:i+1])
 		i += 1
 
-	print password, pairs
 	return len(pairs) >= 2
 
 def valid_pass(password):
-	return valid_first_req(password) and valid_second_req(password) and valid_third_req(password)
+	return valid_second_req(password) and valid_first_req(password) and valid_third_req(password)
 
 def find_next_valid_pass(password):
 	max_duration = time.time() + 5 * 60
@@ -92,10 +102,12 @@ def test():
 	assert(increment_string("z") == "a")
 	assert(increment_string("xz") == "ya")
 	assert(increment_string("zz") == "aa")
+	assert(increment_string("ghijklzz") == "ghijkmaa")
 
 	assert(valid_first_req("abc"))
-	# assert(valid_first_req("hijklmn"))
-	# assert(not valid_second_req("hijklmn"))
+	assert(not valid_first_req("yza"))
+	assert(not valid_first_req("ghjaaabb"))
+	assert(not valid_second_req("hijklmn"))
 
 	assert(not valid_first_req("abbceffg"))
 	assert(valid_third_req("abbceffg"))
@@ -105,6 +117,7 @@ def test():
 	assert(valid_pass("abcdffaa"))
 	assert(valid_pass("ghjaabcc"))
 	assert(find_next_valid_pass("abcdefgh") == "abcdffaa")
+	print find_next_valid_pass("ghijklmn") 
 	assert(find_next_valid_pass("ghijklmn") == "ghjaabcc")
 
 	print "all tests pass!"
@@ -115,7 +128,7 @@ def partone():
 
 def parttwo():
 	input = "hxbxwxba"
-	pass
+	print find_next_valid_pass(increment_string(find_next_valid_pass(input)))
 
 if __name__ == '__main__':
     test()
