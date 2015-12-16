@@ -69,4 +69,5 @@ Jamie would gain 0 happiness units by sitting next to David.
 Jamie would gain 0 happiness units by sitting next to Eric.
 Jamie would gain 0 happiness units by sitting next to Frank.
 Jamie would gain 0 happiness units by sitting next to George.
+Jamie would gain 0 happiness units by sitting next to Mallory.
 

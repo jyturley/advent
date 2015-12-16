@@ -1,13 +1,18 @@
 #!/bin/python
 import re
+from itertools import permutations
 
 def calculate_table(table, preferences):
+	# print preferences
 	total_happiness = 0
 	table = table + table[0:2]
 	for x in xrange(len(table) - 2):
 		left = table[x]
 		person = table[x + 1]
 		right = table[x + 2]
+		# print person
+		# print left, preferences[person][left]
+		# print right, preferences[person][right]
 		total_happiness += preferences[person][left] + preferences[person][right]
 
 	return total_happiness
@@ -43,11 +48,15 @@ def test():
 
 def partone():
 	family, preferences = parse('input.txt')
+	sitting_arrangements = [' '.join(s) for s in permutations(family)]
+	print max([calculate_table(arrangement.split(), preferences) for arrangement in sitting_arrangements])
 
 def parttwo():
-	pass
+	family, preferences = parse('input_2.txt')
+	sitting_arrangements = [' '.join(s) for s in permutations(family)]
+	print max([calculate_table(arrangement.split(), preferences) for arrangement in sitting_arrangements])
 
 if __name__ == '__main__':
-    test()
-    partone()
-    # parttwo()
+    # test()
+    # partone()
+    parttwo()
