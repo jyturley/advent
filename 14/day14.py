@@ -18,6 +18,31 @@ class Reindeer:
 		else:
 			return distance_after_repeated_full_fly_rests + max_fly_distance
 
+def calculate_points_at_time(time, reindeers):
+	scores = {}
+	for reindeer in reindeers:
+		scores[reindeer] = 0
+
+	for t in xrange(1, time+1):
+		for reindeer in winning_reindeers_at_time(t, reindeers):
+			scores[reindeer] += 1
+
+	return scores
+
+
+def winning_reindeers_at_time(time, reindeers):
+	winning_so_far = []
+	max_distance_so_far = 0
+	for reindeer in reindeers:
+		d = reindeer.distance_at_time(time)
+		if d > max_distance_so_far:
+			max_distance_so_far = d
+			winning_so_far = [reindeer]
+		elif d == max_distance_so_far:
+			winning_so_far.append(reindeer)
+
+	return winning_so_far
+
 def parse(text_file):
 	with open(text_file, 'r') as f:
 		data = f.readlines()
@@ -39,6 +64,13 @@ def test():
 	assert(comet.distance_at_time(1000) == 1120)
 	assert(dancer.distance_at_time(1000) == 1056)
 
+	assert(len(winning_reindeers_at_time(2503, [comet, dancer])) == 1)
+	assert(len(winning_reindeers_at_time(2503, [comet, comet])) == 2)
+
+	scores = calculate_points_at_time(1000, [comet, dancer])
+	assert(scores[comet] == 312)
+	assert(scores[dancer] == 689)
+
 	print "all tests pass!"
 
 def partone():
@@ -48,9 +80,13 @@ def partone():
 	print max(distances_at_time)
 
 def parttwo():
-	pass
+	t = 2503
+	reindeers = parse('input.txt')
+	scores = calculate_points_at_time(t, reindeers)
+	print max(scores.values())
+
 
 if __name__ == '__main__':
     test()
-    partone()
-    # parttwo()
+    # partone()
+    parttwo()
