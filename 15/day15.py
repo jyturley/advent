@@ -15,10 +15,25 @@ class Ingredient:
 		product = map(lambda x: scalar * x, attributes)
 		return product
 
+	def multiply_calories(self, scalar):
+		return self.calories * scalar
+
+def is_recipe_target_calorie(recipe, ingredients, target_calorie):
+	calorie_count = 0
+	for x in xrange(len(ingredients)):
+		calorie_count += ingredients[x].multiply_calories(recipe[x])
+
+	return calorie_count == target_calorie
+
+def find_best_recipe_with_calories(proportions, ingredients, target_calorie):
+	recipes_with_target_calories = filter(lambda x: is_recipe_target_calorie(x, ingredients, target_calorie), proportions)
+
+	return find_best_recipe(recipes_with_target_calories, ingredients)
+
 def find_best_recipe(proportions, ingredients):
 	best_recipe_so_far = ""
 	best_score_so_far = 0
-	for index, recipe in enumerate(proportions):
+	for recipe in proportions:
 		score = calculate_score(recipe, ingredients)
 		# print recipe, score
 		if score > best_score_so_far:
@@ -98,9 +113,11 @@ def partone():
 
 
 def parttwo():
-	pass
+	ingredients = parse('input.txt')
+	recipes = generate_proportions(100)
+	print find_best_recipe_with_calories(recipes, ingredients, target_calorie=500)
 
 if __name__ == '__main__':
     # test()
-    partone()
-    # parttwo()
+    # partone()
+    parttwo()
