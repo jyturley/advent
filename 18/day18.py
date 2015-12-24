@@ -13,6 +13,14 @@ def find_nth_frame(grid, n):
 def is_on_for_next_frame(grid, x, y):
 	num_neighbors_on = 0
 	max_index = len(grid) - 1
+
+	# Added for part 2
+	if (x == 0 and y == 0) \
+	   or (x == 0 and y == max_index) \
+	   or (x == max_index and y == 0) \
+	   or (x == max_index and y == max_index):
+			return True  
+
 	if x != 0:
 		num_neighbors_on += grid[x-1][y]
 		if y != 0:
@@ -68,6 +76,7 @@ def test():
 	        [0,0,1,0,0,0],
 	        [1,0,1,0,0,1],
 	        [1,1,1,1,0,0]]
+
 	assert(is_on_for_next_frame(grid, 0, 2))
 	assert(is_on_for_next_frame(grid, 0, 3))
 	assert(total_lights(grid) == 15)
