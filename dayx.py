@@ -1,15 +1,18 @@
 #!/bin/python
 import re
 
-def test():
-	print "all tests pass!"
+def parse():
+    with open('input.txt', 'r') as f:
+        data = f.readlines()
 
+def test():
+    print "all tests pass!"
 
 def partone():
-	pass
+    pass
 
 def parttwo():
-	pass
+    pass
 
 if __name__ == '__main__':
     test()
