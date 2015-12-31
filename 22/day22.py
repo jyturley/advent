@@ -1,5 +1,4 @@
 #!/bin/python
-import re
 
 class Wizard:
     def __init__(self, name, damage, mana, hp):
