@@ -109,9 +109,12 @@ class Wizard:
 def test():
     you = Wizard(name="player", hp=10, damage=0, mana=250)
     boss = Wizard(name="boss", hp=13, damage=8, mana=0)
-    assert(you.attack(boss, spell="Poison"))
-    assert(boss.attack(other_player))
-    assert(you.attack(boss, spell="Magic Missile"))
+    assert(not you.attack(boss, spell="Poison"))
+    assert(not boss.attack(you))
+    assert(not you.attack(boss, spell="Magic Missile"))
+    you.recover()
+    boss.recover()
+    assert(you.fight(boss))
     print "all tests pass!"
 
 def partone():
