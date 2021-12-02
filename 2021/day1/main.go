@@ -24,9 +24,6 @@ func run(input string) (interface{}, interface{}) {
 		slidingWinSum := depths[i-2] + depths[i-1] + depths[i]
 		slidingWinValues[i] = slidingWinSum
 	}
-	if len(slidingWinValues) < 100 {
-		fmt.Println(slidingWinValues)
-	}
 
 	for i := 3; i < len(slidingWinValues); i++ {
 		if slidingWinValues[i-1] < slidingWinValues[i] {
@@ -34,8 +31,7 @@ func run(input string) (interface{}, interface{}) {
 		}
 	}
 
-	part1, part2 := increaseCount, incSlidingWinCount
-	return part1, part2
+	return increaseCount, incSlidingWinCount
 }
 
 func main() {

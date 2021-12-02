@@ -6,10 +6,11 @@ import (
 
 var tests = execute.TestCases{
 	{
-		``,
+		testpuzzle,
 		``,
 		``,
 	},
 }
 
+var testpuzzle = ``
 var puzzle = ``
