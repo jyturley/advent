@@ -7,11 +7,8 @@ import (
 	"strings"
 )
 
-func run(input string) (interface{}, interface{}) {
+func run(input string) (part1 interface{}, part2 interface{}) {
 	//list := parse(input)
-
-	part1, part2 := 0, 0
-
 	return part1, part2
 }
 
@@ -26,5 +23,5 @@ func run(input string) (interface{}, interface{}) {
 func main() {
 	year, day := pkg.GetAoVDate()
 	fmt.Printf("Advent of Code %s Day %s\n", year, day)
-	execute.Run(run, nil, puzzle, true)
+	execute.Run(run, tests, puzzle, true)
 }
