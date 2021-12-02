@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -26,6 +27,14 @@ func GetAoVDate() (year, day string) {
 	}
 
 	return "2021", "Unknown"
+}
+
+func MustScanf(line, format string, a ...interface{}) {
+	n, err := fmt.Sscanf(line, format, a...)
+	Check(err)
+	if n != len(a) {
+		panic(fmt.Errorf("%d args expected in scanf, got %d", len(a), n))
+	}
 }
 
 func Check(err error) {

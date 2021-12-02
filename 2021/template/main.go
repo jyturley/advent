@@ -2,10 +2,11 @@ package main
 
 import (
 	"advent/pkg"
+	"advent/pkg/execute"
+	"fmt"
 	"strings"
 )
 
-// returns part1 and part2
 func run(input string) (interface{}, interface{}) {
 	//list := parse(input)
 
@@ -23,5 +24,7 @@ func run(input string) (interface{}, interface{}) {
 // }
 
 func main() {
+	year, day := pkg.GetAoVDate()
+	fmt.Printf("Advent of Code %s Day %s\n", year, day)
 	execute.Run(run, nil, puzzle, true)
 }
