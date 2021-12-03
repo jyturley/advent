@@ -24,6 +24,8 @@ func GetAoVDate() (year, day string) {
 	split := strings.Split(dir, "/")
 	if len(split) == 9 && strings.HasPrefix(split[8], "day") {
 		return split[7], split[8][3:]
+	} else if len(split) == 8 && strings.HasPrefix(split[7], "day") {
+		return split[6], split[7][3:]
 	}
 
 	return "2021", "Unknown"
