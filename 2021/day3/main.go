@@ -9,13 +9,18 @@ import (
 )
 
 func run(input string) (part1 interface{}, part2 interface{}) {
-	//part 1
+	// part 1
 	binNums := strings.Split(input, "\n")
 	mostCommon, leastCommon := getMostLeastCommonDigits(binNums)
 	gamma := binToInt(mostCommon)
 	epsilon := binToInt(leastCommon)
 	part1 = gamma * epsilon
 
+	// part 2
+	o2, co2 := true, false
+	o2rating := getO2Rating(binNums, o2)
+	co2scrubber := getO2Rating(binNums, co2)
+	part2 = o2rating * co2scrubber
 	return part1, part2
 }
 
@@ -44,9 +49,47 @@ func getMostLeastCommonDigits(binNums []string) (most, least []int) {
 			}
 		}
 	}
-	fmt.Println(most)
-	fmt.Println(least)
 	return most, least
+}
+
+func getO2Rating(binNums []string, o2 bool) int {
+	digitsPerNumber := len(binNums[0])
+	filteredNums := make([]string, len(binNums))
+	copy(filteredNums, binNums)
+
+	digitIdx := 0
+	for len(filteredNums) > 1 && digitIdx < digitsPerNumber {
+		zeros := make([]string, 0)
+		ones := make([]string, 0)
+		for _, num := range filteredNums {
+			currDigit := string(num[digitIdx])
+			if currDigit == "0" {
+				zeros = append(zeros, num)
+			} else {
+				ones = append(ones, num)
+			}
+		}
+		if o2 {
+			if len(zeros) <= len(ones) {
+				filteredNums = ones
+			} else {
+				filteredNums = zeros
+			}
+		} else {
+			if len(zeros) <= len(ones) {
+				filteredNums = zeros
+			} else {
+				filteredNums = ones
+			}
+		}
+
+		digitIdx++
+	}
+	out, err := strconv.ParseInt(filteredNums[0], 2, 64)
+	if err != nil {
+		fmt.Println(filteredNums[0], err)
+	}
+	return int(out)
 }
 
 func binToInt(commonDigits []int) int {
@@ -67,5 +110,5 @@ func binToInt(commonDigits []int) int {
 func main() {
 	year, day := pkg.GetAoVDate()
 	fmt.Printf("Advent of Code %s Day %s\n", year, day)
-	execute.Run(run, tests, testpuzzle, true)
+	execute.Run(run, tests, puzzle, true)
 }
