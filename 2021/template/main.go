@@ -8,6 +8,7 @@ import (
 )
 
 func run(input string) (part1 interface{}, part2 interface{}) {
+	//part 1
 	//list := parse(input)
 	return part1, part2
 }
