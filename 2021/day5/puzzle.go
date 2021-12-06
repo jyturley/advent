@@ -7,7 +7,12 @@ import (
 var tests = execute.TestCases{
 	{
 		testpuzzle,
+		`5`,
 		``,
+	},
+	{
+		puzzle,
+		`4728`,
 		``,
 	},
 }

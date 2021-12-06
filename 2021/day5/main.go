@@ -24,7 +24,7 @@ type Segment struct {
 
 func run(input string) (part1 interface{}, part2 interface{}) {
 	// part 1
-	n := 10
+	n := 1000
 	smallBoard = make([][]int, n)
 	for i := 0; i < n; i++ {
 		smallBoard[i] = make([]int, n)
@@ -33,13 +33,24 @@ func run(input string) (part1 interface{}, part2 interface{}) {
 		}
 	}
 
-	fmt.Println("run: ", input)
 	segments := parse(input)
 	AddDots(segments, smallBoard)
-	print(smallBoard)
-	fmt.Println()
+	// print(smallBoard)
+	part1 = DangerAreas(smallBoard)
 
 	return part1, part2
+}
+
+func DangerAreas(board [][]int) int {
+	sum := 0
+	for r := 0; r < len(board); r++ {
+		for c := 0; c < len(board); c++ {
+			if board[r][c] > 1 {
+				sum += 1
+			}
+		}
+	}
+	return sum
 }
 
 func parse(s string) []Segment {
@@ -73,7 +84,6 @@ func print(board [][]int) {
 }
 
 func addVerticalSegment(segment Segment, board [][]int) error {
-	fmt.Println("vert ", segment)
 	e1, e2 := segment.E1, segment.E2
 	var left, right Coord
 	if e1.x < e2.x {
@@ -90,7 +100,6 @@ func addVerticalSegment(segment Segment, board [][]int) error {
 }
 
 func addHorizontalSegment(segment Segment, board [][]int) error {
-	fmt.Println("horiz ", segment)
 	e1, e2 := segment.E1, segment.E2
 	var top, bottom Coord
 	if e1.y < e2.y {
@@ -121,7 +130,7 @@ func AddDots(segments []Segment, board [][]int) {
 				fmt.Println(err)
 			}
 		} else {
-			fmt.Printf("skipping %v since not horiz/veritical\n", segments[i])
+			// fmt.Printf("skipping %v since not horiz/veritical\n", segments[i])
 		}
 	}
 }
@@ -129,5 +138,5 @@ func AddDots(segments []Segment, board [][]int) {
 func main() {
 	year, day := pkg.GetAoVDate()
 	fmt.Printf("Advent of Code %s Day %s\n", year, day)
-	execute.Run(run, tests, testpuzzle, true)
+	execute.Run(run, tests, puzzle, true)
 }
