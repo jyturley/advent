@@ -9,25 +9,40 @@ import (
 )
 
 const (
-	marked = -999
+	marked = -9
 )
 
 type BingoBoard [5][5]int
 
 func run(input string) (part1 interface{}, part2 interface{}) {
 	// part 1
-	score := 0
 	draw, boards := parse(input)
 	for _, num := range draw {
-		if winner := Announce(boards, num); winner != nil {
-			score = winner.calculateScore(num)
+		if winner, _ := Announce(boards, num); winner != nil {
+			part1 = winner.calculateScore(num)
 			break
 		}
 	}
 
-	part1 = score
-
+	// part 2
+	draw, boards = parse(input) // reset board
+	finalNum := -1
+	for _, num := range draw {
+		if winners := AnnouncePt2(boards, num); len(winners) > 0 {
+			if len(boards) > 1 {
+				boards = removeWinners(boards, winners)
+			} else {
+				finalNum = num
+				break
+			}
+		}
+	}
+	part2 = boards[0].calculateScore(finalNum)
 	return part1, part2
+}
+
+func remove(boards []BingoBoard, idx int) []BingoBoard {
+	return append(boards[:idx], boards[idx+1:]...)
 }
 
 func parse(s string) ([]int, []BingoBoard) {
@@ -52,6 +67,25 @@ func parse(s string) ([]int, []BingoBoard) {
 	return draws, boards
 }
 
+func removeWinners(boards []BingoBoard, winners []int) []BingoBoard {
+	keepBoards := make([]BingoBoard, 0)
+	for i, board := range boards {
+		isIndexAWinner := false
+		for _, winIdx := range winners {
+			if i == winIdx {
+				isIndexAWinner = true
+				break
+			}
+		}
+
+		if !isIndexAWinner {
+			keepBoards = append(keepBoards, board)
+		}
+
+	}
+	return keepBoards
+}
+
 func Mark(bingo *BingoBoard, num int) (int, int, bool) {
 	bb := *bingo
 	for r, _ := range bb {
@@ -74,13 +108,48 @@ func MarkAndCheck(bb *BingoBoard, num int) bool {
 	return false
 }
 
-func Announce(boards []BingoBoard, num int) *BingoBoard {
+func Announce(boards []BingoBoard, num int) (*BingoBoard, int) {
 	for i, _ := range boards {
 		if win := MarkAndCheck(&boards[i], num); win {
-			return &boards[i]
+			for ii, _ := range boards {
+				if ii == i {
+					continue
+				}
+				Mark(&boards[ii], num)
+			}
+			return &boards[i], i
 		}
 	}
-	return nil
+	return nil, 0
+}
+
+func AnnouncePt2(boards []BingoBoard, num int) []int {
+	existWinners := false
+	coords := map[int][]int{}
+	for i, _ := range boards {
+		r, c, win := Mark(&boards[i], num)
+		if win {
+			coords[i] = []int{r, c}
+			existWinners = true
+		}
+	}
+
+	if !existWinners {
+		return nil
+	}
+
+	winners := make([]int, 0)
+
+	for i, _ := range boards {
+		if v, ok := coords[i]; ok {
+			r, c := v[0], v[1]
+			if win := boards[i].Check(r, c); win {
+				winners = append(winners, i)
+			}
+
+		}
+	}
+	return winners
 }
 
 func (bb *BingoBoard) Check(r, c int) bool {
