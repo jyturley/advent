@@ -9,9 +9,8 @@ import (
 )
 
 var (
-	dot        = 0
-	line       = 1
-	smallBoard = [][]int{}
+	dot  = 0
+	line = 1
 )
 
 type Coord struct {
@@ -23,20 +22,25 @@ type Segment struct {
 }
 
 func run(input string) (part1 interface{}, part2 interface{}) {
-	// part 1
-	n := 1000
-	smallBoard = make([][]int, n)
+	// init board
+	smallN, bigN := 10, 1000
+	segments := parse(input)
+	n := bigN
+	if len(segments) < 10 {
+		n = smallN
+	}
+	board := make([][]int, n)
 	for i := 0; i < n; i++ {
-		smallBoard[i] = make([]int, n)
+		board[i] = make([]int, n)
 		for ii := 0; ii < n; ii++ {
-			smallBoard[i][ii] = dot
+			board[i][ii] = dot
 		}
 	}
 
-	segments := parse(input)
-	AddDots(segments, smallBoard)
-	// print(smallBoard)
-	part1 = DangerAreas(smallBoard)
+	// part 1
+	AddDots(segments, board)
+	// print(board)
+	part1 = DangerAreas(board)
 
 	return part1, part2
 }
