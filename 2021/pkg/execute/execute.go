@@ -3,8 +3,6 @@ package execute
 import (
 	"fmt"
 	"time"
-	// "github.com/faiface/pixel/pixelgl"
-	// "github.com/kindermoumoute/adventofcode/pkg/twod"
 )
 
 func Run(run func(string) (interface{}, interface{}), tests TestCases, puzzle string, verbose bool) {

@@ -24,3 +24,17 @@ func Max(values ...int) int {
 	}
 	return max.value
 }
+
+func Min(values ...int) int {
+	if len(values) == 0 {
+		panic("no value in min function")
+	}
+
+	var max *nullableInt
+	for _, value := range values {
+		if max == nil || max.value > value {
+			max = &nullableInt{value}
+		}
+	}
+	return max.value
+}
