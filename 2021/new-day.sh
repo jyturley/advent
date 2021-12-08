@@ -1,1 +1,3 @@
-cp -r template/ "day$1"
+NEWDIR="day$1"
+cp -r template/ $NEWDIR
+cd $NEWDIR
