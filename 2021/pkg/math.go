@@ -11,6 +11,18 @@ type nullableInt struct {
 	value int
 }
 
+func Sum(values ...int) int {
+	if len(values) == 0 {
+		panic("no value in sum function")
+	}
+
+	sum := 0
+	for _, value := range values {
+		sum += value
+	}
+	return sum
+}
+
 func Max(values ...int) int {
 	if len(values) == 0 {
 		panic("no value in max function")
