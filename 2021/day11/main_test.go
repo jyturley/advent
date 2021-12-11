@@ -75,7 +75,7 @@ func TestStepNew(t *testing.T) {
 		t.Run("test", func(t *testing.T) {
 			start := parse(tt.in)
 			want := parse(tt.want)
-			flashCount := stepN(tt.numSteps, &start)
+			flashCount, _ := stepN(tt.numSteps, &start)
 			assert.Truef(t, deepEqual(want, start), "Correct From To:\n%s\nYour From To:\n%s\n", SideBySide(parse(tt.in), parse(tt.want)), SideBySide(parse(tt.in), start))
 			if tt.numFlashes > 0 {
 				assert.Equal(t, tt.numFlashes, flashCount)

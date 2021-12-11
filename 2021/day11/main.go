@@ -17,19 +17,32 @@ func run(input string) (part1 interface{}, part2 interface{}) {
 	// part 1
 	grid := parse(input)
 	part1 = Part1(grid)
+	part2 = Part2(grid)
 	return part1, part2
 }
 
 func Part1(grid Grid) int {
-	return stepN(100, &grid)
+	flashCount, _ := stepN(100, &grid)
+	return flashCount
 }
 
-func stepN(n int, grid *Grid) int {
+func Part2(grid Grid) int {
+	_, unisonStep := stepN(500, &grid)
+	return unisonStep
+}
+
+func stepN(n int, grid *Grid) (flashCountAfterN, unisonStep int) {
 	numFlashes := 0
+	unisonStep = -1
 	for i := 0; i < n; i++ {
-		numFlashes += step(grid)
+		c := step(grid)
+		if c == 100 && unisonStep == -1 {
+			unisonStep = i + 1
+			fmt.Println("found unisonStep:", unisonStep)
+		}
+		numFlashes += c
 	}
-	return numFlashes
+	return numFlashes, unisonStep
 }
 
 func step(grid *Grid) int {
@@ -49,9 +62,7 @@ func step(grid *Grid) int {
 	for len(q) > 0 {
 		current := q[0]
 		q = q[1:]
-		// fmt.Printf("val: %d at (%d, %d)\n", (*grid)[current.y][current.x], current.x, current.y)
 		if _, ok := seen[current]; ok {
-			// fmt.Println("skipped")
 			continue
 		}
 		seen[current] = true
@@ -64,8 +75,8 @@ func step(grid *Grid) int {
 		}
 	}
 
-	numFlashes := 0
 	// set back flashes to zero
+	numFlashes := 0
 	for y, _ := range grid {
 		for x, _ := range grid {
 			if (*grid)[y][x] > 9 {
