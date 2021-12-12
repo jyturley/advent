@@ -18,12 +18,19 @@ func run(input string) (part1 interface{}, part2 interface{}) {
 	cave := parse(input)
 	// fmt.Println(cave)
 	part1 = Part1(cave)
+	part2 = Part2(cave)
 	return part1, part2
 }
 
 func Part1(caves map[string][]string) int {
 	ans := make([]string, 0)
 	dfs([]string{"start"}, &ans, caves)
+	return len(ans)
+}
+
+func Part2(caves map[string][]string) int {
+	ans := make([]string, 0)
+	dfs2([]string{"start"}, &ans, "", caves)
 	return len(ans)
 }
 
@@ -58,6 +65,52 @@ func dfs(start []string, ans *[]string, caves map[string][]string) {
 	for _, connectionCave := range caves[startCave] {
 		start = append(start, connectionCave)
 		dfs(start, ans, caves)
+		start = start[:len(start)-1]
+	}
+
+	return
+}
+
+func dfs2(start []string, ans *[]string, doubleSmallLetter string, caves map[string][]string) {
+	if len(start) < 1 {
+		s := fmt.Sprintf("bad args - start:%v ans:%v\n", start, ans)
+		panic(s)
+	}
+
+	startCave := start[len(start)-1]
+	if startCave == "end" {
+		s := stringify(start)
+		// fmt.Println(s)
+		*ans = append(*ans, s)
+		return
+	}
+
+	if startCave == "start" && len(start) > 2 {
+		return
+	}
+
+	seenCount := 0
+	lowercase := !unicode.IsUpper(rune(startCave[0]))
+
+	// if startCave is lowercase, ensure it hasn't been seen before
+	if lowercase {
+		for i := 0; i < len(start)-1; i++ {
+			if startCave == start[i] {
+				seenCount++
+				break
+			}
+		}
+	}
+
+	if doubleSmallLetter == "" && seenCount == 1 {
+		doubleSmallLetter = startCave
+	} else if seenCount > 0 {
+		return
+	}
+
+	for _, connectionCave := range caves[startCave] {
+		start = append(start, connectionCave)
+		dfs2(start, ans, doubleSmallLetter, caves)
 		start = start[:len(start)-1]
 	}
 

@@ -8,17 +8,17 @@ var tests = execute.TestCases{
 	{
 		testpuzzle,
 		`10`,
-		``,
+		`36`,
 	},
 	{
 		testpuzzle2,
 		`19`,
-		``,
+		`103`,
 	},
 	{
 		testpuzzle3,
 		`226`,
-		``,
+		`3509`,
 	},
 }
 
