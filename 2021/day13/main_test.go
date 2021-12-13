@@ -1,13 +1,19 @@
 package main
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestSomething(t *testing.T) {
-	// positions := parse(testpuzzle)
-	assert.Equal(t, true, true)
+func TestFoldGrid(t *testing.T) {
+	grid, folds := parse(testpuzzle)
+	fmt.Println(grid.String())
+	fmt.Println()
+	grid, markCount := foldGrid(grid, folds[0])
+	assert.Equalf(t, 17, markCount, "%s %d\n", grid.String(), markCount)
+	// grid, markCount = foldGrid(grid, folds[1])
+	// assert.Equalf(t, 17, markCount, "%s %d\n", grid.String(), markCount)
 }
 
 // func Test(t *testing.T) {

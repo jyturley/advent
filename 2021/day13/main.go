@@ -28,19 +28,74 @@ func run(input string) (part1 interface{}, part2 interface{}) {
 	// part 1
 	grid, folds := parse(input)
 	part1 = Part1(grid, folds)
+	part2 = Part2(grid, folds) // answer is printed out, not returned
 	return part1, part2
 }
 
-func Part1(grid Grid, folds []Fold) int {
-	dotCount := 0
+func Part2(grid Grid, folds []Fold) int {
 	for _, fold := range folds {
-		grid, dotCount = foldGrid(grid, fold)
+		grid, _ = foldGrid(grid, fold)
 	}
-	return dotCount
+	fmt.Println(grid.String())
+	return 0
+}
+
+func Part1(grid Grid, folds []Fold) int {
+	_, markCount := foldGrid(grid, folds[0])
+	return markCount
 }
 
 func foldGrid(grid Grid, fold Fold) (Grid, int) {
-	return nil, 0
+	var newGrid Grid
+
+	if fold.axis == "y" {
+		newGrid = make(Grid, fold.value)
+		for y, _ := range grid {
+			if y < fold.value {
+				newGrid[y] = make([]string, len(grid[y]))
+				for x, _ := range grid[y] {
+					newGrid[y][x] = grid[y][x]
+				}
+			} else if y > fold.value {
+				newY := fold.value - pkg.Abs((y - fold.value))
+				for x, _ := range grid[y] {
+					if grid[newY][x] == mark {
+						newGrid[newY][x] = mark
+					} else {
+						newGrid[newY][x] = grid[y][x]
+					}
+				}
+			}
+		}
+	} else {
+		newGrid = make(Grid, len(grid))
+		for y, _ := range grid {
+			newGrid[y] = make([]string, fold.value)
+			for x, _ := range grid[y] {
+				if x < fold.value {
+					newGrid[y][x] = grid[y][x]
+				} else if x > fold.value {
+					newX := fold.value - pkg.Abs((x - fold.value))
+					if grid[y][newX] == mark {
+						newGrid[y][newX] = mark
+					} else {
+						newGrid[y][newX] = grid[y][x]
+					}
+				}
+			}
+		}
+	}
+
+	markCount := 0
+	for y, _ := range newGrid {
+		for x, _ := range newGrid[y] {
+			if newGrid[y][x] == mark {
+				markCount++
+			}
+		}
+	}
+
+	return newGrid, markCount
 }
 
 func parse(s string) (Grid, []Fold) {
