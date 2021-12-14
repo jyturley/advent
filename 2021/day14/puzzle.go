@@ -8,7 +8,7 @@ var tests = execute.TestCases{
 	{
 		testpuzzle,
 		`1588`,
-		``,
+		`2188189693529`,
 	},
 }
 
