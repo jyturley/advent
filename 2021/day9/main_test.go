@@ -23,3 +23,9 @@ func TestGetAdjCoords(t *testing.T) {
 	grid := parse(testpuzzle)
 	assert.Equal(t, 3, len(getAdjCoords(0, 1, grid)))
 }
+func TestGetBasin(t *testing.T) {
+	grid := parse(testpuzzle)
+	assert.Equal(t, 3, getBasin(Coord{0, 0}, grid))
+	assert.Equal(t, 9, getBasin(Coord{9, 0}, grid))
+	assert.Equal(t, 14, getBasin(Coord{2, 2}, grid))
+}
