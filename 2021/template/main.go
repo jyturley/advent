@@ -9,8 +9,19 @@ import (
 
 func run(input string) (part1 interface{}, part2 interface{}) {
 	// part 1
-	//list := parse(input)
+	// list := parse(input)
+	// part1 = Part1(list)
 	return part1, part2
+}
+
+func Part1() int {
+	out := 0
+	return out
+}
+
+func Part2() int {
+	out := 0
+	return out
 }
 
 // func parse(s string) {

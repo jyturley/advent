@@ -18,6 +18,24 @@ func ParseIntList(s, sep string) []int {
 	return list
 }
 
+func ParseIntGrid(s string) [][]int {
+	out := [][]int{}
+	lines := strings.Split(s, "\n")
+	for _, line := range lines {
+		row := make([]int, 0)
+		s := strings.Split(line, "")
+		for i := 0; i < len(line); i++ {
+			if h, err := strconv.Atoi(s[i]); err == nil {
+				row = append(row, h)
+			} else {
+				fmt.Println(err)
+			}
+		}
+		out = append(out, row)
+	}
+	return out
+}
+
 func GetAoVDate() (year, day string) {
 	dir, err := os.Getwd()
 	Check(err)
