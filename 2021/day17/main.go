@@ -10,6 +10,7 @@ import (
 
 var (
 	startPos = Coord{0, 0}
+	badValue = -999999
 )
 
 type Coord struct {
@@ -28,9 +29,23 @@ type TargetArea struct {
 func run(input string) (part1 interface{}, part2 interface{}) {
 	// part 1
 	ta := parse(input)
-	fmt.Printf("%v\n", ta)
 	part1 = Part1(ta)
+	part2 = Part2(ta)
 	return part1, part2
+}
+
+func Part2(ta TargetArea) int {
+	goodVelocities := make([]Velocity, 0)
+	for x := 0; x < 1000; x++ {
+		for y := -500; y < 500; y++ {
+			v := Velocity{x, y}
+			height := highestPointInTrajectory(v, ta)
+			if height != badValue {
+				goodVelocities = append(goodVelocities, v)
+			}
+		}
+	}
+	return len(goodVelocities)
 }
 
 func Part1(ta TargetArea) int {
@@ -52,7 +67,7 @@ func highestPointInTrajectory(initial Velocity, ta TargetArea) int {
 		pos, velocity = nextStep(pos, velocity)
 		maxY = pkg.Max(maxY, pos.y)
 		if pastTargetArea(pos, ta) {
-			return -1
+			return badValue
 		}
 	}
 

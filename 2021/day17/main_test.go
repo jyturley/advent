@@ -14,6 +14,14 @@ func TestHighestPointInTrajectory(t *testing.T) {
 	assert.Equal(t, -1, highestPointInTrajectory(Velocity{17, -4}, ta))
 }
 
+func TestPart2(t *testing.T) {
+	ta1 := parse(testpuzzle)
+	ta2 := parse(puzzle)
+	assert.Equal(t, 112, Part2(ta1))
+	fmt.Println()
+	assert.Equal(t, 112, Part2(ta2))
+}
+
 func TestPositionInTargetArea(t *testing.T) {
 	ta := parse(testpuzzle)
 	tests := []struct {
