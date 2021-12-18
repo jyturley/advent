@@ -6,10 +6,16 @@ import (
 	"testing"
 )
 
-func TestSomething(t *testing.T) {
+func TestParse(t *testing.T) {
 	fmt.Println("testing")
-	positions := parse(miniExample)
-	assert.Equal(t, true, true)
+	s := parse(miniExample)
+	assert.Equal(t, "110100101111111000101000", s, miniExample)
+}
+
+func TestPart1(t *testing.T) {
+	input := "38006F45291200"
+	s := parse(input)
+	assert.Equal(t, "110100101111111000101000", Part1(s), input)
 }
 
 // func Test(t *testing.T) {
