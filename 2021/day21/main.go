@@ -4,13 +4,16 @@ import (
 	"advent/pkg"
 	"advent/pkg/execute"
 	"fmt"
-	"math/rand"
 	"strings"
-	"time"
 )
 
 const (
-	winscore = 1000
+	winscorePart1 = 1000
+	winscorePart2 = 21
+)
+
+var (
+	winscore = winscorePart1
 )
 
 type Board struct {
@@ -89,31 +92,25 @@ func (dd *DeterministicDice) RollCount() int {
 	return dd.count
 }
 
-type NormalDice struct {
-	count int
-}
-
-func (nd *NormalDice) Roll() int {
-	nd.count++
-	rand.Seed(time.Now().UnixNano())
-	return rand.Intn(100) + 1
-}
-func (nd *NormalDice) RollCount() int {
-	return nd.count
-}
-
 func run(input string) (part1 interface{}, part2 interface{}) {
 	// part 1
 	pos1, pos2 := parse(input)
 	part1 = Part1(pos1, pos2)
+	part2 = Part2(pos1, pos2)
 	return part1, part2
 }
 
 func Part1(pos1, pos2 int) int {
-	out := 0
+	winscore = winscorePart1
 	dice := DeterministicDice{}
-	out = playGame(NewBoard(pos1, pos2), &dice)
-	return out
+	return playGame(NewBoard(pos1, pos2), &dice)
+}
+
+func Part2(pos1, pos2 int) int {
+	winscore = winscorePart2
+	dice := DeterministicDice{}
+	p1UniverseWins, p2UniverseWins := playGameQuantum(NewBoard(pos1, pos2), &dice)
+	return pkg.Max(p1UniverseWins, p2UniverseWins)
 }
 
 func playGame(board *Board, d Dice) int {
@@ -151,9 +148,8 @@ func playGame(board *Board, d Dice) int {
 	return out
 }
 
-func Part2() int {
-	out := 0
-	return out
+func playGameQuantum(board *Board, d Dice) (p1UniverseWins, p2UniverseWins int) {
+	return 0, 0
 }
 
 func parse(s string) (p1, p2 int) {
