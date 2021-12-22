@@ -88,6 +88,7 @@ func (dd *DeterministicDice) Roll() int {
 	dd.count++
 	return dd.currentVal
 }
+
 func (dd *DeterministicDice) RollCount() int {
 	return dd.count
 }
@@ -108,8 +109,7 @@ func Part1(pos1, pos2 int) int {
 
 func Part2(pos1, pos2 int) int {
 	winscore = winscorePart2
-	dice := DeterministicDice{}
-	p1UniverseWins, p2UniverseWins := playGameQuantum(NewBoard(pos1, pos2), &dice)
+	p1UniverseWins, p2UniverseWins := playGameQuantum(NewBoard(pos1, pos2))
 	return pkg.Max(p1UniverseWins, p2UniverseWins)
 }
 
@@ -148,8 +148,8 @@ func playGame(board *Board, d Dice) int {
 	return out
 }
 
-func playGameQuantum(board *Board, d Dice) (p1UniverseWins, p2UniverseWins int) {
-	return 0, 0
+func playGameQuantum(board *Board) (p1UniverseWins, p2UniverseWins int) {
+	return p1UniverseWins, p2UniverseWins
 }
 
 func parse(s string) (p1, p2 int) {
