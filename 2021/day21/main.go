@@ -13,6 +13,7 @@ const (
 )
 
 var (
+	cache    map[[5]int][2]int64
 	winscore = winscorePart1
 )
 
@@ -107,10 +108,14 @@ func Part1(pos1, pos2 int) int {
 	return playGame(NewBoard(pos1, pos2), &dice)
 }
 
-func Part2(pos1, pos2 int) int {
+func Part2(pos1, pos2 int) int64 {
 	winscore = winscorePart2
 	p1UniverseWins, p2UniverseWins := playGameQuantum(NewBoard(pos1, pos2))
-	return pkg.Max(p1UniverseWins, p2UniverseWins)
+	if p1UniverseWins > p2UniverseWins {
+		return p1UniverseWins
+	} else {
+		return p2UniverseWins
+	}
 }
 
 func playGame(board *Board, d Dice) int {
@@ -148,8 +153,44 @@ func playGame(board *Board, d Dice) int {
 	return out
 }
 
-func playGameQuantum(board *Board) (p1UniverseWins, p2UniverseWins int) {
-	return p1UniverseWins, p2UniverseWins
+func playGameQuantum(board *Board) (p1UniverseWins, p2UniverseWins int64) {
+	cache = make(map[[5]int][2]int64)
+	wins := play([2]int{board.p1, board.p2}, [2]int{0, 0}, 0)
+	return wins[0], wins[1]
+}
+
+func play(pos, scores [2]int, player int) [2]int64 {
+	if scores[0] >= 21 {
+		return [2]int64{1, 0}
+	}
+	if scores[1] >= 21 {
+		return [2]int64{0, 1}
+	}
+
+	memo := [5]int{pos[0], pos[1], scores[0], scores[1], player}
+	if v, ok := cache[memo]; ok {
+		return v
+	}
+	wins := [2]int64{}
+	for i := 1; i <= 3; i++ {
+		for j := 1; j <= 3; j++ {
+			for k := 1; k <= 3; k++ {
+				newPos := pos
+				newPos[player] = (pos[player] + i + j + k) % 10
+				newScores := scores
+				newScores[player] = scores[player] + newPos[player] + 1
+				nextPlayer := 1
+				if player == 1 {
+					nextPlayer = 0
+				}
+				newWin := play(newPos, newScores, nextPlayer)
+				wins[0] += newWin[0]
+				wins[1] += newWin[1]
+			}
+		}
+	}
+	cache[memo] = wins
+	return wins
 }
 
 func parse(s string) (p1, p2 int) {
