@@ -145,6 +145,7 @@ func playGame(board *Board, d Dice) int {
 		fmt.Printf("Player2 wins with score of %d, over %d\n", score2, score1)
 		out = score1 * d.RollCount()
 	}
+
 	return out
 }
 
